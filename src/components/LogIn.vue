@@ -14,7 +14,8 @@
             <el-input v-model="form.password"></el-input>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" @click="onSubmit">登录</el-button>
+            <el-button type="primary" @click="logIn">登录</el-button>
+            <el-button @click="goLogUp">注册</el-button>
           </el-form-item>
         </el-form>
       </div></el-col>
@@ -37,9 +38,17 @@ export default {
     }
   },
   methods: {
-    onSubmit() {
-      console.log('submit!');
-      this.$router.push('/rrrr')
+    logIn() {
+
+      // this.axios.post('http://localhost:8080/test',{
+      //   username:this.form.username,
+      //   passwd:this.form.password
+      // }).then((response) => {
+      //   console.log(response)
+      // })
+    },
+    goLogUp(){
+      this.$router.push('LogUp')
     }
   }
 }

@@ -1,5 +1,6 @@
 import LogIn from "./components/LogIn";
 import LogUp from "./components/LogUp";
+import LostMessage from "./components/LostMessage";
 import {createRouter, createWebHashHistory} from "vue-router";
 
 const routes = [
@@ -9,9 +10,13 @@ const routes = [
         component: LogIn
     },
     {
-        path:'/rrrr',
-        name: 'Logup',
+        path:'/LogUp',
+        name: 'LogUp',
         component: LogUp
+    },
+    {
+        path:'/Hall',
+        component: LostMessage
     }
 ]
 

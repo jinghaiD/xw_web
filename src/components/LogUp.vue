@@ -3,8 +3,8 @@
     <el-col :span="24"><div class="grid-content bg-purple-dark"></div></el-col>
   </el-row>
   <el-row>
-    <el-col :span="8"><div class="grid-content bg-purple"></div></el-col>
-    <el-col :span="8">
+    <el-col :span="10"><div class="grid-content bg-purple"></div></el-col>
+    <el-col :span="4">
       <div class="grid-content bg-purple-light">
         <el-form ref="form" :model="form" label-width="80px">
           <el-form-item label="账号">
@@ -18,7 +18,7 @@
           </el-form-item>
         </el-form>
       </div></el-col>
-    <el-col :span="8"><div class="grid-content bg-purple"></div></el-col>
+    <el-col :span="10"><div class="grid-content bg-purple"></div></el-col>
   </el-row>
   <el-row style="height: 300px">
     <el-col :span="24" ><div class="grid-content bg-purple-dark"></div></el-col>
@@ -31,14 +31,22 @@ export default {
   data() {
     return {
       form: {
-        username: '',
-        password: ''
+        username: '1',
+        password: '1'
       }
     }
   },
   methods: {
     onSubmit() {
-      console.log('submit!');
+      this.axios.post('http://10.181.39.60:5000/login2',{
+        username:this.form.username,
+        password:this.form.password
+      }).then((response) => {
+        console.log(response)
+        if(response.data.username == "1"){
+          this.$router.push('/Hall')
+        }
+      })
     }
   }
 }
