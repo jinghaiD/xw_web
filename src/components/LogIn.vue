@@ -8,7 +8,7 @@
       <div class="grid-content bg-purple-light">
         <el-form ref="form" :model="form" label-width="80px">
           <el-form-item label="账号">
-            <el-input v-model="form.name"></el-input>
+            <el-input v-model="form.username"></el-input>
           </el-form-item>
           <el-form-item label="密码">
             <el-input v-model="form.password"></el-input>
@@ -27,6 +27,7 @@
 </template>
 
 <script>
+import { ElMessage } from 'element-plus'
 export default {
   name: "LogIn",
   data() {
@@ -37,15 +38,30 @@ export default {
       }
     }
   },
+  mounted() {
+    if(localStorage.getItem("login") == '1'){
+      this.$router.push("/my/"+localStorage.getItem("username"))
+    }
+  },
   methods: {
     logIn() {
-
-      // this.axios.post('http://localhost:8080/test',{
-      //   username:this.form.username,
-      //   passwd:this.form.password
-      // }).then((response) => {
-      //   console.log(response)
-      // })
+      console.log(this.form.username)
+      console.log(this.form.password)
+      this.axios.post('http://10.181.39.60:5001/login',{
+        username:this.form.username,
+        password:this.form.password
+      }).then((response) => {
+        console.log(response)
+        if(response.data == 1){
+          this.$router.push('/hall')
+          localStorage.setItem('login', '1')
+          localStorage.setItem('username', this.form.username)
+        }else if(response.data == 2){
+          ElMessage.error("用户名不存在")
+        }else if(response.data == 3){
+          ElMessage.error("密码错误")
+        }
+      })
     },
     goLogUp(){
       this.$router.push('LogUp')
