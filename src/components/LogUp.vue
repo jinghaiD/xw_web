@@ -82,7 +82,7 @@ export default {
         console.log(response)
         if(response.data == "1")
         {
-          this.$router.push('/Hall')
+          this.$router.push("/my/"+localStorage.getItem("username"))
           ElMessage.success("注册成功，已经自动登录")
           localStorage.setItem('login', '1')
           localStorage.setItem('username', this.form.username)

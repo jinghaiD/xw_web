@@ -1,6 +1,7 @@
 <template>
   <el-descriptions class="margin-top" :title="message.category" :column="3" :size="size" border>
     <template #extra>
+      <el-button size="small" type="danger" icon="el-icon-delete" circle @click="delost"></el-button>
       <el-tag :type="status[message.status]">{{statusInfo[message.status]}}</el-tag>
     </template>
     <el-descriptions-item>
@@ -44,7 +45,7 @@
 
 <script>
 export default {
-  name: "LostMessage",
+  name: "MyLostMessage",
   data () {
     return {
       size: '',
@@ -59,10 +60,22 @@ export default {
       }
     };
   },
-  props:['message']
+  props:['message'],
+  methods: {
+    delost(){
+      this.axios.post('http://10.181.39.60:5001/deleteLostProperty',{
+          lostID:this.message.lostID
+      }).then((response) => {
+        console.log(response)
+        // location.reload();
+      })
+    }
+  },
 }
 </script>
 
 <style scoped>
-
+.el-button {
+  margin-right: 10px;
+}
 </style>

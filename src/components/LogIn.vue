@@ -35,6 +35,9 @@ export default {
       form: {
         username: '',
         password: ''
+      },
+      user:{
+
       }
     }
   },
@@ -53,9 +56,14 @@ export default {
       }).then((response) => {
         console.log(response)
         if(response.data == 1){
-          this.$router.push('/hall')
+          this.$router.push("/my/"+localStorage.getItem("username"))
           localStorage.setItem('login', '1')
           localStorage.setItem('username', this.form.username)
+          this.axios.post('http://10.181.39.60:5001/getUserByUsername',{
+            username:this.form.username
+          }).then((response) => {
+            localStorage.setItem('userid', response.data.userID)
+          })
         }else if(response.data == 2){
           ElMessage.error("用户名不存在")
         }else if(response.data == 3){

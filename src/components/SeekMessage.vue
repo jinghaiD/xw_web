@@ -27,16 +27,9 @@
     <el-descriptions-item>
       <template #label>
         <i class="el-icon-tickets"></i>
-        拾取时间
+        丢失时间
       </template>
-      {{message.pick_time}}
-    </el-descriptions-item>
-    <el-descriptions-item>
-      <template #label>
-        <i class="el-icon-office-building"></i>
-        发布时间
-      </template>
-      {{message.release_time}}
+      {{message.time}}
     </el-descriptions-item>
   </el-descriptions>
   <el-divider></el-divider>
@@ -44,7 +37,7 @@
 
 <script>
 export default {
-  name: "LostMessage",
+  name: "SeekMessage",
   data () {
     return {
       size: '',
@@ -57,7 +50,7 @@ export default {
         "2":"审核中",
         "3":"已完成"
       }
-    };
+    }
   },
   props:['message']
 }
