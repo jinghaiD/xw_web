@@ -1,8 +1,8 @@
 <template>
-  <div>
-<!--    <router-link to="/logup">about</router-link>-->
+  <div id="app">
+
+    <router-view></router-view>
   </div>
-  <router-view></router-view>
 </template>
 
 <script>

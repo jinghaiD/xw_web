@@ -1,143 +1,211 @@
 <template>
-  <el-row>
-    <el-col :span="2" ></el-col>
-    <el-col :span="2" :offset="16">
-      <el-button type="text" @click="show = 1">大厅</el-button>
-    </el-col>
-    <el-col :span="2" >
-      <el-button type="text" @click="show = 2">我的</el-button>
-    </el-col>
-    <el-col :span="2" >
-      <el-button type="text" @click="logOut">登出</el-button>
-    </el-col>
-  </el-row>
-  <el-divider></el-divider>
-  <el-row v-if="show == 1" class="tac" style="height: 1000px">
-    <el-col :span="4">
-      <el-menu
-          default-active="1"
-          class="el-menu-vertical-demo"
-          >
-        <el-menu-item index="1" @click="index = 1">
-          <i class="el-icon-document"></i>
-          <template #title>寻人信息</template>
-        </el-menu-item>
-        <el-menu-item index="2" @click="index = 2">
-          <i class="el-icon-document"></i>
-          <template #title>寻物信息</template>
-        </el-menu-item>
-        <el-menu-item>
-          <el-button @click="dialogFormVisible = true">新建发布</el-button>
+  <div>
+    <el-row class="bg1">
+      <el-col :span="3" >
+        <h5 style="margin:12px 0">创新港失物招领系统</h5>
+      </el-col>
+      <el-col :span="1" :offset="18">
+        <el-button type="text" @click="show = 1" icon="el-icon-s-home">大厅</el-button>
+      </el-col>
+      <el-col :span="1" >
+        <el-button type="text" @click="show = 2" icon="el-icon-user-solid">我的</el-button>
+      </el-col>
+      <el-col :span="1" >
+        <el-button type="text" @click="logOut" icon="el-icon-s-release">登出</el-button>
+      </el-col>
+    </el-row>
+    <el-divider style="margin-top: 8px;margin-bottom: 8px"></el-divider>
+    <el-row v-if="show == 1" style="height: 950px">
+      <el-col :span="2">
+        <el-menu
+            default-active="1"
+            class="el-menu-vertical-demo bg1"
+            style="width: 100%"
+            >
+          <el-menu-item index="1" @click="index = 1">
+            <i class="el-icon-document"></i>
+            <template #title>寻人信息</template>
+          </el-menu-item>
+          <el-menu-item index="2" @click="index = 2">
+            <i class="el-icon-document"></i>
+            <template #title>寻物信息</template>
+          </el-menu-item>
+          <el-menu-item>
+            <el-button @click="dialogFormVisible = true">新建发布</el-button>
 
-          <el-dialog title="新建发布" v-model="dialogFormVisible">
-            <el-form :model="form">
-              <el-form-item label="物品名称" :label-width="formLabelWidth">
-                <el-input v-model="form.category" autocomplete="off"></el-input>
-              </el-form-item>
-              <el-form-item label="简要描述" :label-width="formLabelWidth">
-                <el-input v-model="form.description" autocomplete="off"></el-input>
-              </el-form-item>
-              <el-form-item label="捡拾地址" :label-width="formLabelWidth">
-                <el-input v-model="form.location" autocomplete="off"></el-input>
-              </el-form-item>
-              <el-form-item label="拾取时间" :label-width="formLabelWidth">
-                <span class="demonstration"></span>
-                <el-date-picker
-                    v-model="form.pick_time"
-                    type="datetime"
-                    placeholder="选择日期时间">
-                </el-date-picker>
-              </el-form-item>
-            </el-form>
-            <template #footer>
-              <span class="dialog-footer">
-                <el-button @click="dialogFormVisible = false">取 消</el-button>
-                <el-button type="primary" @click="fabuLost">发 布</el-button>
-              </span>
-            </template>
-          </el-dialog>
-        </el-menu-item>
-        <el-menu-item>
-          <el-button @click="dialogFormVisible1 = true">新建寻找</el-button>
+            <el-dialog title="新建发布" v-model="dialogFormVisible">
+              <el-form :model="form">
+                <el-form-item label="物品名称" :label-width="formLabelWidth">
+                  <el-input v-model="form.category" autocomplete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="简要描述" :label-width="formLabelWidth">
+                  <el-input v-model="form.description" autocomplete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="捡拾地址" :label-width="formLabelWidth">
+                  <el-input v-model="form.location" autocomplete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="拾取时间" :label-width="formLabelWidth">
+                  <span class="demonstration"></span>
+                  <el-date-picker
+                      v-model="form.pick_time"
+                      type="datetime"
+                      placeholder="选择日期时间">
+                  </el-date-picker>
+                </el-form-item>
+              </el-form>
+              <template #footer>
+                <span class="dialog-footer">
+                  <el-button @click="dialogFormVisible = false">取 消</el-button>
+                  <el-button type="primary" @click="fabuLost">发 布</el-button>
+                </span>
+              </template>
+            </el-dialog>
+          </el-menu-item>
+          <el-menu-item>
+            <el-button @click="dialogFormVisible1 = true">新建寻找</el-button>
 
-          <el-dialog title="新建寻找" v-model="dialogFormVisible1">
-            <el-form :model="form1">
-              <el-form-item label="物品名称" :label-width="formLabelWidth">
-                <el-input v-model="form1.category" autocomplete="off"></el-input>
-              </el-form-item>
-              <el-form-item label="简要描述" :label-width="formLabelWidth">
-                <el-input v-model="form1.description" autocomplete="off"></el-input>
-              </el-form-item>
-              <el-form-item label="捡拾地址" :label-width="formLabelWidth">
-                <el-input v-model="form1.location" autocomplete="off"></el-input>
-              </el-form-item>
-              <el-form-item label="拾取时间" :label-width="formLabelWidth">
-                <span class="demonstration"></span>
-                <el-date-picker
-                    v-model="form1.fabu_time"
-                    type="datetime"
-                    placeholder="选择日期时间">
-                </el-date-picker>
-              </el-form-item>
-            </el-form>
-            <template #footer>
-              <span class="dialog-footer">
-                <el-button @click="dialogFormVisible1 = false">取 消</el-button>
-                <el-button type="primary" @click="fabuSeek">发 布</el-button>
-              </span>
-            </template>
-          </el-dialog>
-        </el-menu-item>
-      </el-menu>
-    </el-col>
-    <el-col :span="18">
-      <div v-if="index == 1">
-        <LostMessage v-for="message in messages" :key="message.lostID" v-bind:message="message"></LostMessage>
-      </div>
-      <div v-if="index == 2">
-        <SeekMessage v-for="message in seeks" :key="message.seekID" v-bind:message="message"></SeekMessage>
-      </div>
-    </el-col>
-  </el-row>
-  <el-row v-if="show == 2" class="tac" style="height: 1000px">
-    <el-col :span="4">
-      <el-menu
-          default-active="1"
-          class="el-menu-vertical-demo"
-      >
-        <el-menu-item index="1" @click="index1 = 1">
-          <i class="el-icon-document"></i>
-          <template #title>我发布的寻人信息</template>
-        </el-menu-item>
-        <el-menu-item index="2" @click="index1 = 2">
-          <i class="el-icon-document"></i>
-          <template #title>我发布的寻物信息</template>
-        </el-menu-item>
-        <el-menu-item index="3" @click="index1 = 3">
-          <i class="el-icon-document"></i>
-          <template #title>我的通知</template>
-        </el-menu-item>
-        <el-menu-item index="4" @click="index1 = 4">
-          <i class="el-icon-document"></i>
-          <template #title>发布信息</template>
-        </el-menu-item>
-      </el-menu>
-    </el-col>
-    <el-col :span="18">
-      <div v-if="index1 == 1">
-        <MyLostMessage v-for="message in my_lost" :key="message.lostID" v-bind:message="message"></MyLostMessage>
-      </div>
-      <div v-if="index1 == 2">
-        <MySeekMessage v-for="message in my_seek" :key="message.seekID" v-bind:message="message"></MySeekMessage>
-      </div>
-      <div v-if="index1 == 3">
-        <h1>迭代二</h1>
-      </div>
-      <div v-if="index1 == 4">
-        <h1>迭代二</h1>
-      </div>
-    </el-col>
-  </el-row>
+            <el-dialog title="新建寻找" v-model="dialogFormVisible1">
+              <el-form :model="form1">
+                <el-form-item label="物品名称" :label-width="formLabelWidth">
+                  <el-input v-model="form1.category" autocomplete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="简要描述" :label-width="formLabelWidth">
+                  <el-input v-model="form1.description" autocomplete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="捡拾地址" :label-width="formLabelWidth">
+                  <el-input v-model="form1.location" autocomplete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="拾取时间" :label-width="formLabelWidth">
+                  <span class="demonstration"></span>
+                  <el-date-picker
+                      v-model="form1.fabu_time"
+                      type="datetime"
+                      placeholder="选择日期时间">
+                  </el-date-picker>
+                </el-form-item>
+              </el-form>
+              <template #footer>
+                <span class="dialog-footer">
+                  <el-button @click="dialogFormVisible1 = false">取 消</el-button>
+                  <el-button type="primary" @click="fabuSeek">发 布</el-button>
+                </span>
+              </template>
+            </el-dialog>
+          </el-menu-item>
+        </el-menu>
+      </el-col>
+      <el-divider direction="vertical" style="height: 100%"></el-divider>
+      <el-col :span="18">
+        <el-scrollbar height="950px">
+        <div v-if="index == 1">
+          <LostMessage v-for="message in messages" :key="message.lostID" v-bind:message="message"></LostMessage>
+        </div>
+        <div v-if="index == 2">
+          <SeekMessage v-for="message in seeks" :key="message.seekID" v-bind:message="message"></SeekMessage>
+        </div>
+        </el-scrollbar>
+      </el-col>
+    </el-row>
+    <el-row v-if="show == 2" class="tac" style="height: 1000px">
+      <el-col :span="2">
+        <el-menu
+            default-active="1"
+            class="el-menu-vertical-demo bg1"
+            style="width: 100%"
+        >
+          <el-menu-item index="1" @click="index1 = 1">
+            <i class="el-icon-document"></i>
+            <template #title>我的寻人信息</template>
+          </el-menu-item>
+          <el-menu-item index="2" @click="index1 = 2">
+            <i class="el-icon-document"></i>
+            <template #title>我的寻物信息</template>
+          </el-menu-item>
+          <el-menu-item index="3" @click="index1 = 3">
+            <i class="el-icon-document"></i>
+            <template #title>我的通知</template>
+          </el-menu-item>
+          <el-menu-item index="4" @click="index1 = 4">
+            <i class="el-icon-document"></i>
+            <template #title>我的信息</template>
+          </el-menu-item>
+        </el-menu>
+      </el-col>
+      <el-divider direction="vertical" style="height: 100%"></el-divider>
+      <el-col :span="18">
+        <el-scrollbar height="950px">
+        <div v-if="index1 == 1">
+          <MyLostMessage v-for="message in my_lost" :key="message.lostID" v-bind:message="message"></MyLostMessage>
+        </div>
+        <div v-if="index1 == 2">
+          <MySeekMessage v-for="message in my_seek" :key="message.seekID" v-bind:message="message"></MySeekMessage>
+        </div>
+        <div v-if="index1 == 3">
+          <h1>迭代二</h1>
+        </div>
+        <div v-if="index1 == 4">
+          <h1>迭代二</h1>
+        </div>
+        </el-scrollbar>
+      </el-col>
+    </el-row>
+    <el-drawer
+        title="请填写修改的内容"
+        v-model="drawer"
+        :direction="direction"
+        destroy-on-close>
+      <el-form :model="form2" style="margin-right: 20px">
+        <el-form-item label="物品名称" :label-width="formLabelWidth">
+          <el-input v-model="form2.category" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="简要描述" :label-width="formLabelWidth">
+          <el-input v-model="form2.description" autocomplete="off" type = "textarea"></el-input>
+        </el-form-item>
+        <el-form-item label="捡拾地址" :label-width="formLabelWidth">
+          <el-input v-model="form2.location" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="拾取时间" :label-width="formLabelWidth">
+          <span class="demonstration"></span>
+          <el-date-picker
+              v-model="form2.pick_time"
+              type="datetime"
+              placeholder="选择日期时间">
+          </el-date-picker>
+        </el-form-item>
+        <el-form-item>
+          <el-button  type="primary" @click="editLost">修改</el-button>
+        </el-form-item>
+      </el-form>
+    </el-drawer>
+    <el-drawer
+        title="请填写修改的内容"
+        v-model="drawer2"
+        :direction="direction"
+        destroy-on-close>
+      <el-form :model="form3" style="margin-right: 20px">
+        <el-form-item label="物品名称" :label-width="formLabelWidth">
+          <el-input v-model="form3.category" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="简要描述" :label-width="formLabelWidth">
+          <el-input v-model="form3.description" autocomplete="off" type = "textarea"></el-input>
+        </el-form-item>
+        <el-form-item label="捡拾地址" :label-width="formLabelWidth">
+          <el-input v-model="form3.location" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="丢失时间" :label-width="formLabelWidth">
+          <span class="demonstration"></span>
+          <el-date-picker
+              v-model="form3.pick_time"
+              type="datetime"
+              placeholder="选择日期时间">
+          </el-date-picker>
+        </el-form-item>
+        <el-form-item>
+          <el-button  type="primary" @click="editSeek">修改</el-button>
+        </el-form-item>
+      </el-form>
+    </el-drawer>
+  </div>
 </template>
 
 <script>
@@ -149,6 +217,9 @@ export default {
   name: "my",
   data() {
     return {
+      drawer: false,
+      drawer2: false,
+      direction: 'rtl',
       index:'1',
       index1:'1',
       show:'1',
@@ -170,6 +241,22 @@ export default {
         description:'',
         location:"",
         fabu_time: ''
+      },
+      form2: {
+        category:'',
+        description:'',
+        location:"",
+        pick_time: '',
+        lostID:'',
+        status:''
+      },
+      form3: {
+        category:'',
+        description:'',
+        location:"",
+        pick_time: '',
+        seekID:'',
+        status:''
       },
       formLabelWidth: '120px'
     };
@@ -218,6 +305,7 @@ export default {
       localStorage.clear()
       this.$router.push('/')
     },
+
     fabuLost(){
       this.dialogFormVisible = false
       this.axios.post('http://10.181.39.60:5001/postLostProperty',{
@@ -226,6 +314,36 @@ export default {
         location:this.form.location,
         pick_time:this.form.pick_time,
         release_userID:localStorage.getItem("userid")
+      }).then((response) => {
+        console.log(response)
+        location.reload();
+      })
+    },
+    editLost(){
+      this.drawer = false
+      this.axios.post('http://10.181.39.60:5001/editLostProperty',{
+        category:this.form2.category,
+        description:this.form2.description,
+        location:this.form2.location,
+        pick_time:this.form2.pick_time,
+        release_userID:localStorage.getItem("userid"),
+        lostID:this.form2.lostID,
+        status:this.form2.status
+      }).then((response) => {
+        console.log(response)
+        location.reload();
+      })
+    },
+    editSeek(){
+      this.drawer2 = false
+      this.axios.post('http://10.181.39.60:5001/editSeekProperty',{
+        category:this.form3.category,
+        description:this.form3.description,
+        location:this.form3.location,
+        time:this.form3.pick_time,
+        userID:localStorage.getItem("userid"),
+        seekID:this.form3.seekID,
+        status:this.form3.status
       }).then((response) => {
         console.log(response)
         location.reload();
@@ -257,6 +375,12 @@ export default {
 <style scoped>
 .el-menu-vertical-demo:not(.el-menu--collapse) {
   width: 200px;
-  min-height: 1000px;
+  min-height: 950px;
+}
+.bg{
+  background-color: lightblue;
+}
+.bg1{
+  background-color: #057ab8;
 }
 </style>

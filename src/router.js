@@ -3,8 +3,6 @@ import LogUp from "./components/LogUp";
 import LostMessage from "./components/LostMessage";
 import My from './components/My'
 import {createRouter, createWebHashHistory} from "vue-router";
-import MyMessage from "./components/MyMessage";
-import MyLost from "./components/MyLost";
 import MySeek from "./components/MySeek";
 
 const routes = [
@@ -27,15 +25,7 @@ const routes = [
         component: My
     },
     {
-        path:'/1',
-        component: MyMessage
-    },
-    {
-        path:'/my/2',
-        component: MyLost
-    },
-    {
-        path:'/my/3',
+        path:'/myseek',
         component: MySeek
     }
 ]

@@ -1,46 +1,45 @@
 <template>
-  <el-row style="height: 400px">
-    <el-col :span="24"><div class="grid-content bg-purple-dark"></div></el-col>
-  </el-row>
-  <el-row>
-    <el-col :span="10"><div class="grid-content bg-purple"></div></el-col>
-    <el-col :span="4">
-      <div class="grid-content bg-purple-light">
-        <el-form ref="form" :model="form" label-width="80px">
-          <el-form-item label="账号">
-            <el-input v-model="form.username"></el-input>
-          </el-form-item>
-          <el-form-item label="密码">
-            <el-input v-model="form.password"></el-input>
-          </el-form-item>
-          <el-form-item label="真实姓名">
-            <el-input v-model="form.realname"></el-input>
-          </el-form-item>
-          <el-form-item label="证件号">
-            <el-input v-model="form.validID"></el-input>
-          </el-form-item>
-          <el-form-item label="性别">
-            <el-input v-model="form.gender"></el-input>
-          </el-form-item>
-          <el-form-item label="手机号码">
-            <el-input v-model="form.phone"></el-input>
-          </el-form-item>
-          <el-form-item label="邮箱">
-            <el-input v-model="form.mail"></el-input>
-          </el-form-item>
-          <el-form-item label="个人简介">
-            <el-input v-model="form.individual_resume"></el-input>
-          </el-form-item>
-          <el-form-item>
-            <el-button type="primary" @click="onSubmit">注册</el-button>
-          </el-form-item>
-        </el-form>
+  <div class="bg" >
+    <el-row style="">
+      <el-col :span="4"><div class="grid-content bg-purple">
+        <img src="http://stu.xjtu.edu.cn/coremail/s?func=lp:getImg&img_id=logo_001&org_id=" style="margin-top:50px">
       </div></el-col>
-    <el-col :span="10"><div class="grid-content bg-purple"></div></el-col>
-  </el-row>
-  <el-row style="height: 300px">
-    <el-col :span="24" ><div class="grid-content bg-purple-dark"></div></el-col>
-  </el-row>
+      <el-col :span="12"><div class="grid-content bg-purple"></div></el-col>
+      <el-col :span="8" class="log">
+        <div class="inter">
+          <el-form :model="form" :rules="rules" ref="form"  label-width="80px">
+            <el-form-item label="账号" prop="username">
+              <el-input v-model="form.username"></el-input>
+            </el-form-item>
+            <el-form-item label="密码" prop="password">
+              <el-input type="password" v-model="form.password"></el-input>
+            </el-form-item>
+            <el-form-item label="真实姓名" prop="realname">
+              <el-input v-model="form.realname"></el-input>
+            </el-form-item>
+            <el-form-item label="证件号" prop="validID">
+              <el-input v-model="form.validID"></el-input>
+            </el-form-item>
+            <el-form-item label="性别">
+              <el-input v-model="form.gender"></el-input>
+            </el-form-item>
+            <el-form-item label="手机号码" prop="phone">
+              <el-input v-model="form.phone"></el-input>
+            </el-form-item>
+            <el-form-item label="邮箱" prop="mail">
+              <el-input v-model="form.mail"></el-input>
+            </el-form-item>
+            <el-form-item label="个人简介">
+              <el-input type="textarea" v-model="form.individual_resume"></el-input>
+            </el-form-item>
+            <el-form-item>
+              <el-button class="bu" type="primary" @click="submitForm('form')" >注册</el-button>
+            </el-form-item>
+          </el-form>
+        </div>
+      </el-col>
+    </el-row>
+  </div>
 </template>
 
 <script>
@@ -59,6 +58,27 @@ export default {
         phone:'',
         mail:'',
         individual_resume:''
+      },
+      rules: {
+        username: [
+          { required: true, message: '请输入用户名', trigger: 'blur' },
+          { min: 6, max: 10, message: '长度在 6 到 10 个字符', trigger: 'blur' }
+        ],
+        password: [
+          { required: true, message: '请输入密码', trigger: 'blur' }
+        ],
+        realname: [
+          { required: true, message: '请输入姓名', trigger: 'blur' }
+        ],
+        validID: [
+          { required: true, message: '请输入证件号', trigger: 'blur' }
+        ],
+        phone: [
+          { required: true, message: '请输入号码', trigger: 'blur' }
+        ],
+        mail: [
+          { required: true, message: '请输入邮箱', trigger: 'blur' }
+        ]
       }
     }
   },
@@ -68,6 +88,17 @@ export default {
     }
   },
   methods: {
+    submitForm(formName) {
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          alert('submit!');
+          this.onSubmit()
+        } else {
+          console.log('error submit!!');
+          return false;
+        }
+      });
+    },
     onSubmit() {
       this.axios.post('http://10.181.39.60:5001/register',{
         username:this.form.username,
@@ -82,10 +113,20 @@ export default {
         console.log(response)
         if(response.data == "1")
         {
+          this.axios.post('http://10.181.39.60:5001/getUserByUsername',{
+            username:this.form.username
+          }).then((response) =>{
+            localStorage.setItem('username', response.data.username)
+            localStorage.setItem('realname', response.data.realname)
+            localStorage.setItem('validID', response.data.validID)
+            localStorage.setItem('gender', response.data.gender)
+            localStorage.setItem('phone', response.data.phone)
+            localStorage.setItem('mail', response.data.mail)
+            localStorage.setItem('resume', response.data.individual_resume)
+          })
           this.$router.push("/my/"+localStorage.getItem("username"))
           ElMessage.success("注册成功，已经自动登录")
           localStorage.setItem('login', '1')
-          localStorage.setItem('username', this.form.username)
         }else if(response.data == "2")
         {
           ElMessage.error("用户名不存在")
@@ -97,5 +138,32 @@ export default {
 </script>
 
 <style scoped>
-
+.bg{
+  margin: 0px;
+  background-image: url(http://stu.xjtu.edu.cn/coremail/s?func=lp:getImg&org_id=&img_id=background_001);
+  background-size: 100% 100%;
+  background-attachment: fixed;
+  height: 950px;
+}
+.log{
+  top: 0; bottom: 0;
+  left: 0; right: 0;
+  width: 800px;
+  height: 950px;
+  line-height: 2;
+  margin: auto;
+  border-radius: 5px;
+  background: rgba(255, 255, 255, .3);
+  box-shadow: 3px 3px 6px 3px rgba(0, 0, 0, .3);
+}
+.inter{
+  margin-top: 200px;
+  margin-right: 120px;
+  margin-left: 120px;
+}
+.bu{
+  width: 100%;
+  margin-left: 0;
+  margin-bottom: 10px;
+}
 </style>

@@ -1,6 +1,7 @@
 <template>
   <el-descriptions class="margin-top" :title="message.category" :column="3" :size="size" border>
     <template #extra>
+      <el-button size="small" type="primary" @click="openChange">修改</el-button>
       <el-button size="small" type="danger" icon="el-icon-delete" circle @click="delost"></el-button>
       <el-tag :type="status[message.status]">{{statusInfo[message.status]}}</el-tag>
     </template>
@@ -67,8 +68,20 @@ export default {
           lostID:this.message.lostID
       }).then((response) => {
         console.log(response)
-        // location.reload();
+        location.reload();
       })
+    },
+    openChange(){
+      console.log(this.$parent.$parent.$parent.$parent.drawer)
+      console.log(this.$parent.$parent.$parent.$parent.form2)
+      console.log(this.message)
+      this.$parent.$parent.$parent.$parent.drawer = true;
+      this.$parent.$parent.$parent.$parent.form2.description = this.message.description;
+      this.$parent.$parent.$parent.$parent.form2.category = this.message.category;
+      this.$parent.$parent.$parent.$parent.form2.location = this.message.location;
+      this.$parent.$parent.$parent.$parent.form2.pick_time = this.message.pick_time;
+      this.$parent.$parent.$parent.$parent.form2.lostID = this.message.lostID;
+      this.$parent.$parent.$parent.$parent.form2.status = this.message.status;
     }
   },
 }
