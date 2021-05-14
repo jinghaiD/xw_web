@@ -66,14 +66,9 @@ export default {
             localStorage.setItem('phone', response.data.phone)
             localStorage.setItem('mail', response.data.mail)
             localStorage.setItem('resume', response.data.individual_resume)
-          })
-          this.$router.push("/my/"+localStorage.getItem("username"))
-          localStorage.setItem('login', '1')
-
-          this.axios.post('http://10.181.39.60:5001/getUserByUsername',{
-            username:this.form.username
-          }).then((response) => {
             localStorage.setItem('userid', response.data.userID)
+            localStorage.setItem('login', '1')
+            this.$router.push("/my/"+localStorage.getItem("username"))
           })
         }else if(response.data == 2){
           ElMessage.error("用户名不存在")
