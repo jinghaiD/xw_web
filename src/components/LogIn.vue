@@ -59,10 +59,14 @@ export default {
           this.axios.post('http://10.181.39.60:5001/getUserByUsername',{
             username:this.form.username
           }).then((response) =>{
+            var gg = '男'
+            if(response.data.gender==0){
+              gg = '女'
+            }
             localStorage.setItem('username', response.data.username)
             localStorage.setItem('realname', response.data.realname)
             localStorage.setItem('validID', response.data.validID)
-            localStorage.setItem('gender', response.data.gender)
+            localStorage.setItem('gender', gg)
             localStorage.setItem('phone', response.data.phone)
             localStorage.setItem('mail', response.data.mail)
             localStorage.setItem('resume', response.data.individual_resume)
