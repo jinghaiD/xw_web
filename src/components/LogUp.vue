@@ -21,7 +21,10 @@
               <el-input v-model="form.validID"></el-input>
             </el-form-item>
             <el-form-item label="性别">
-              <el-input v-model="form.gender"></el-input>
+              <el-select v-model="form.gender" placeholder="">
+                <el-option label="男" value="男"></el-option>
+                <el-option label="女" value="女"></el-option>
+              </el-select>
             </el-form-item>
             <el-form-item label="手机号码" prop="phone">
               <el-input v-model="form.phone"></el-input>
@@ -62,7 +65,7 @@ export default {
       rules: {
         username: [
           { required: true, message: '请输入用户名', trigger: 'blur' },
-          { min: 6, max: 10, message: '长度在 6 到 10 个字符', trigger: 'blur' }
+          { min: 6,  message: '长度在大于6个字符', trigger: 'blur' }
         ],
         password: [
           { required: true, message: '请输入密码', trigger: 'blur' }
@@ -91,21 +94,27 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          alert('submit!');
+          // alert('submit!');
           this.onSubmit()
         } else {
-          console.log('error submit!!');
+          // console.log('error submit!!');
           return false;
         }
       });
     },
     onSubmit() {
+      var gen = 1
+      if(this.form.gender == '男'){
+        gen = 1
+      }else{
+        gen = 0
+      }
       this.axios.post('http://10.181.39.60:5001/register',{
         username:this.form.username,
         password:this.form.password,
         realname:this.form.realname,
         validID:this.form.validID,
-        gender:this.form.gender,
+        gender:gen,
         phone:this.form.phone,
         mail:this.form.mail,
         individual_resume:this.form.individual_resume
@@ -129,7 +138,7 @@ export default {
           localStorage.setItem('login', '1')
         }else if(response.data == "2")
         {
-          ElMessage.error("用户名不存在")
+          ElMessage.error("用户名已经存在")
         }
       })
     }

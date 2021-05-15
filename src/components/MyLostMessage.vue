@@ -8,7 +8,7 @@
     <el-descriptions-item>
       <template #label>
         <i class="el-icon-user"></i>
-        丢失物品
+        拾取的物品
       </template>
       {{message.category}}
     </el-descriptions-item>
@@ -22,7 +22,7 @@
     <el-descriptions-item>
       <template #label>
         <i class="el-icon-location-outline"></i>
-        丢失位置
+        放置位置
       </template>
       {{message.location}}
     </el-descriptions-item>

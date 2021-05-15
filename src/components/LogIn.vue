@@ -67,6 +67,7 @@ export default {
             localStorage.setItem('mail', response.data.mail)
             localStorage.setItem('resume', response.data.individual_resume)
             localStorage.setItem('userid', response.data.userID)
+            localStorage.setItem('password', response.data.password)
             localStorage.setItem('login', '1')
             this.$router.push("/my/"+localStorage.getItem("username"))
           })

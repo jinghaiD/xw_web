@@ -8,7 +8,7 @@
     <el-descriptions-item>
       <template #label>
         <i class="el-icon-user"></i>
-        丢失物品
+        丢失的物品
       </template>
       {{message.category}}
     </el-descriptions-item>

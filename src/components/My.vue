@@ -31,7 +31,7 @@
             <template #title>寻物信息</template>
           </el-menu-item>
           <el-menu-item>
-            <el-button @click="dialogFormVisible = true">新建发布</el-button>
+            <el-button @click="dialogFormVisible = true">寻找失主</el-button>
 
             <el-dialog title="新建发布" v-model="dialogFormVisible">
               <el-form :model="form">
@@ -62,7 +62,7 @@
             </el-dialog>
           </el-menu-item>
           <el-menu-item>
-            <el-button @click="dialogFormVisible1 = true">新建寻找</el-button>
+            <el-button @click="dialogFormVisible1 = true">寻找物品</el-button>
 
             <el-dialog title="新建寻找" v-model="dialogFormVisible1">
               <el-form :model="form1">
@@ -143,12 +143,97 @@
         <div v-if="index1 == 3">
           <h1>迭代二</h1>
         </div>
-        <div v-if="index1 == 4">
-          <h1>迭代二</h1>
+        <div v-if="index1 == 4" style="margin-left: 20px">
+          <h1 style="float: left">{{people.realname}}</h1>
+          <br>
+          <br>
+          <br>
+          <br>
+          <br>
+          <br>
+          <br>
+          <br>
+          <br>
+          <h4 style="float: left">学生卡号：{{people.validID}}</h4>
+          <br>
+          <br>
+          <br>
+          <br>
+          <br>
+          <br>
+          <br>
+
+          <h4 style="float: left">性别：{{people.gender}}</h4>
+          <br>
+          <br>
+          <br>
+          <br>
+          <br>
+          <br>
+          <br>
+          <br>
+
+          <h4 style="float: left">联系电话：{{people.phone}}</h4>
+          <br>
+          <br>
+          <br>
+          <br>
+          <br>
+          <br>
+          <br>
+
+          <h4 style="float: left">联系邮箱：{{people.mail}}</h4>
+          <br>
+          <br>
+          <br>
+          <br>
+          <br>
+          <br>
+          <br>
+
+          <p style="float: left">个人简介：{{people.resume}}</p>
+          <br>
+          <br>
+          <br>
+          <br>
+          <el-button size="small" type="primary" style="float: left" @click="openPeople">修改</el-button>
+
         </div>
         </el-scrollbar>
       </el-col>
     </el-row>
+    <el-drawer
+        title="请填写修改的内容"
+        v-model="drawer_people"
+        :direction="direction"
+        destroy-on-close>
+      <el-form :model="people" style="margin-right: 20px">
+        <el-form-item label="姓名" :label-width="formLabelWidth">
+          <el-input v-model="people.realname" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="学生卡号" :label-width="formLabelWidth">
+          <el-input v-model="people.validID" autocomplete="off" type = "textarea"></el-input>
+        </el-form-item>
+        <el-form-item label="性别" :label-width="formLabelWidth">
+          <el-select v-model="people.gender" placeholder="请选择">
+            <el-option label="男" value="男"></el-option>
+            <el-option label="女" value="女"></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="联系电话" :label-width="formLabelWidth">
+          <el-input v-model="people.phone" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="联系邮箱" :label-width="formLabelWidth">
+          <el-input v-model="people.mail" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="个人简介" :label-width="formLabelWidth">
+          <el-input v-model="people.resume" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-button  type="primary" @click="editPeople">修改</el-button>
+        </el-form-item>
+      </el-form>
+    </el-drawer>
     <el-drawer
         title="请填写修改的内容"
         v-model="drawer"
@@ -219,6 +304,7 @@ export default {
     return {
       drawer: false,
       drawer2: false,
+      drawer_people: false,
       direction: 'rtl',
       index:'1',
       index1:'1',
@@ -258,7 +344,15 @@ export default {
         seekID:'',
         status:''
       },
-      formLabelWidth: '120px'
+      formLabelWidth: '120px',
+      people:{
+        realname:'',
+        validID:'',
+        gender:'',
+        phone:'',
+        mail:'',
+        resume:''
+      }
     };
   },
   mounted() {
@@ -288,6 +382,12 @@ export default {
         console.log(response)
         this.my_seek = response.data
       })
+      this.people.realname = localStorage.getItem('realname')
+      this.people.validID = localStorage.getItem('validID')
+      this.people.gender = localStorage.getItem('gender')
+      this.people.phone = localStorage.getItem('phone')
+      this.people.mail = localStorage.getItem('mail')
+      this.people.resume = localStorage.getItem('resume')
     }
     else {
       this.$router.push("/")
@@ -360,6 +460,34 @@ export default {
       }).then((response) => {
         console.log(response)
         location.reload();
+      })
+    },
+    openPeople(){
+      this.drawer_people = true
+    },
+    editPeople(){
+      var gen = 1
+      if(this.people.gender == '男'){
+        gen = 1
+      }else{
+        gen = 0
+      }
+      this.axios.post('http://10.181.39.60:5001/editUser', {
+        userID:localStorage.getItem('userid'),
+        username:localStorage.getItem('username'),
+        password:localStorage.getItem('password'),
+        realname:this.people.realname,
+        validID:this.people.validID,
+        IDphoto:'fsdfsd',
+        gender:gen,
+        phone:this.people.phone,
+        mail:this.people.mail,
+        individual_resume:this.people.resume,
+      }).then((response) => {
+        console.log(gen)
+        console.log(response)
+        this.drawer_people = false
+
       })
     }
   },
